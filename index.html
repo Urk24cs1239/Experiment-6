@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Second-hand Bookstore Lab Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f6f0;
+            transition: background-color 0.5s ease;
+        }
+        .section-box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background-color: #4a3b32;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        .btn.dark { background-color: #c1121f; }
+        #time { font-size: 24px; font-weight: bold; color: #4a3b32; }
+        #date { font-size: 16px; color: #666; margin-bottom: 10px; }
+        .book-item { padding: 8px 0; }
+    </style>
+</head>
+<body>
+
+    <h1>📚 Second-Hand Bookstore Dashboard</h1>
+    <hr><br>
+
+    <!-- 1. Digital Clock Panel -->
+    <div class="section-box">
+        <h3>1. Bookstore Operating Time (Date Object & setInterval)</h3>
+        <div id="time">--:--:--</div>
+        <div id="date"></div>
+    </div>
+
+    <!-- 3. Font Size Modifier -->
+    <div class="section-box">
+        <h3>3. Interactive Elements (Mouse Events)</h3>
+        <p id="para1" onmouseover="incSize()" onmouseout="decSize()" style="font-size: 16px; transition: 0.2s; cursor: pointer; color: #555;">
+            🔍 Hover over this Librarian's Note to enlarge the textbook trade-in policy details.
+        </p>
+    </div>
+
+    <!-- 4. Delivery Tracker -->
+    <div class="section-box">
+        <h3>4. Book Delivery Tracker Simulation (setTimeout & clearTimeout)</h3>
+        <div style="background: #ddd; width: 100%; max-width: 500px; height: 50px; position: relative; overflow: hidden; margin-bottom: 10px; border-radius: 4px;">
+            <div id="img" style="width: 50px; height: 30px; background: #e76f51; color: white; text-align: center; line-height: 30px; border-radius: 4px; font-weight: bold; position: relative; top: 10px;">📦</div>
+        </div>
+        <button class="btn" onclick="moveRight()">Track Order Transit</button>
+        <button class="btn dark" onclick="stop()">Reset Position</button>
+    </div>
+
+    <!-- 5. Class and Object Showcase -->
+    <div class="section-box">
+        <h3>5. Collector's Vault Item (Class & Object Definition)</h3>
+        <div id="special"></div>
+    </div>
+
+    <!-- 6. Array Iteration Output -->
+    <div class="section-box">
+        <h3>6. Book Inventory Catalog Grading (Arrays & Conditions)</h3>
+        <div id="bookList"></div>
+    </div>
+
+    <!-- JavaScript Business Logic Core -->
+    <script>
+        // --- Module 1: Clock Logic ---
+        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        function display() {
+            var d = new Date();
+            var h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
+            var ampm = h >= 12 ? "PM" : "AM";
+            h = h % 12 || 12;
+            m = m < 10 ? "0" + m : m;
+            s = s < 10 ? "0" + s : s;
+            document.getElementById("time").innerHTML = h + ":" + m + ":" + s + " " + ampm;
+            document.getElementById("date").innerHTML = days[d.getDay()] + ", " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+        }
+        setInterval(display, 1000);
+
+        // --- Module 2: Background Cycle Logic ---
+        function setBackgroundColor() {
+            var red = Math.floor(Math.random() * 100) + 155;
+            var green = Math.floor(Math.random() * 100) + 155;
+            var blue = Math.floor(Math.random() * 100) + 155;
+            var color = "rgb(" + red + "," + green + "," + blue + ")";
+            document.body.style.backgroundColor = color;
+        }
+        setInterval(setBackgroundColor, 30000); // Changes color shift cycle every 30 seconds
+
+        // --- Module 3: Mouse Events Logic ---
+        function incSize() { document.getElementById("para1").style.fontSize = "24px"; }
+        function decSize() { document.getElementById("para1").style.fontSize = "16px"; }
+
+        // --- Module 4: Delivery Animation Logic ---
+        var imgObj;
+        var animate;
+        var roadWidth = 500;
+        function init() {
+            imgObj = document.getElementById("img");
+            imgObj.style.position = "relative";
+            imgObj.style.left = "0px";
+            
+            // Render remaining textbook arrays/objects instantly on baseline loading initialization
+            renderObjects();
+        }
+        function moveRight() {
+            var left = parseInt(imgObj.style.left) || 0;
+            left += 2;
+            if (left > roadWidth - 60) left = 0;
+            imgObj.style.left = left + "px";
+            animate = setTimeout(moveRight, 10);
+        }
+        function stop() {
+            clearTimeout(animate);
+            imgObj.style.left = "0px";
+        }
+
+        // --- Module 5 & 6: Data Models Processing Logic ---
+        class Book {
+            constructor(title, condition, price) {
+                this.bookTitle = title;
+                this.condition = condition;
+                this.price = price;
+            }
+            present() {
+                return "Rare find: <strong>" + this.bookTitle + "</strong> (" + this.condition + " condition) is available for ₹" + this.price + "!";
+            }
+        }
+
+        function renderObjects() {
+            // Render Module 5 Object Instance
+            var specialItem = new Book("The Hobbit (1st Edition Print)", "Vintage Fair", 4500);
+            document.getElementById("special").innerHTML = specialItem.present();
+
+            // Render Module 6 Catalog Processing Arrays
+            var bookCatalog = [
+                { title: "Introduction to Algorithms", isbn: "BK8923", yearPublished: 1990 },
+                { title: "JavaScript: The Good Parts", isbn: "BK1246", yearPublished: 2008 },
+                { title: "Design Patterns", isbn: "BK5541", yearPublished: 1994 },
+                { title: "Eloquent JavaScript", isbn: "BK9921", yearPublished: 2018 },
+                { title: "Artificial Intelligence", isbn: "BK2331", yearPublished: 2020 }
+            ];
+            var outputHTML = "";
+            for (var i = 0; i < bookCatalog.length; i++) {
+                var category = (bookCatalog[i].yearPublished < 2000) ? "Vintage Edition (Discounts Apply)" : "Modern Edition (Standard Pricing)";
+                outputHTML += "<div class='book-item'><p>📖 <strong>" + bookCatalog[i].title + "</strong> | ISBN: " + bookCatalog[i].isbn + " <br><small>Classification: " + category + "</small></p></div><hr>";
+            }
+            document.getElementById("bookList").innerHTML = outputHTML;
+            display(); // Call clock once immediately
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
